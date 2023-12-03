@@ -29,9 +29,20 @@
         private void InitializeComponent()
         {
             System.Windows.Forms.TabPage tabPage1;
-            this.colorsPanel = new System.Windows.Forms.Panel();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.lineButton = new System.Windows.Forms.Button();
+            this.triangleButton = new System.Windows.Forms.Button();
+            this.rectangleButton = new System.Windows.Forms.Button();
+            this.circleButton = new System.Windows.Forms.Button();
+            this.penButton = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
+            this.trackBar1 = new System.Windows.Forms.TrackBar();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.label3 = new System.Windows.Forms.Label();
+            this.palette = new System.Windows.Forms.PictureBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.currentColor = new System.Windows.Forms.PictureBox();
+            this.colorsPanel = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.pictureBox8 = new System.Windows.Forms.PictureBox();
@@ -41,22 +52,19 @@
             this.pictureBox6 = new System.Windows.Forms.PictureBox();
             this.pictureBox4 = new System.Windows.Forms.PictureBox();
             this.pictureBox5 = new System.Windows.Forms.PictureBox();
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.файлToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.открытьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.сохранитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.создатьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.currentColor = new System.Windows.Forms.PictureBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.canvas = new System.Windows.Forms.PictureBox();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.palette = new System.Windows.Forms.PictureBox();
-            this.label3 = new System.Windows.Forms.Label();
             tabPage1 = new System.Windows.Forms.TabPage();
             tabPage1.SuspendLayout();
+            this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
+            this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.palette)).BeginInit();
             this.colorsPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.currentColor)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -65,24 +73,149 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
-            this.menuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.currentColor)).BeginInit();
             this.tabControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.canvas)).BeginInit();
-            this.panel1.SuspendLayout();
-            this.panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.palette)).BeginInit();
             this.SuspendLayout();
             // 
             // tabPage1
             // 
             tabPage1.BackColor = System.Drawing.Color.DarkGray;
+            tabPage1.Controls.Add(this.panel1);
+            tabPage1.Controls.Add(this.label4);
+            tabPage1.Controls.Add(this.trackBar1);
             tabPage1.Controls.Add(this.panel2);
             tabPage1.Location = new System.Drawing.Point(4, 22);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            tabPage1.Size = new System.Drawing.Size(1256, 93);
+            tabPage1.Size = new System.Drawing.Size(1256, 92);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "Инструменты";
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.lineButton);
+            this.panel1.Controls.Add(this.triangleButton);
+            this.panel1.Controls.Add(this.rectangleButton);
+            this.panel1.Controls.Add(this.circleButton);
+            this.panel1.Controls.Add(this.penButton);
+            this.panel1.Location = new System.Drawing.Point(444, 6);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(402, 80);
+            this.panel1.TabIndex = 0;
+            // 
+            // lineButton
+            // 
+            this.lineButton.Image = global::Paint.Resource.line;
+            this.lineButton.Location = new System.Drawing.Point(332, 14);
+            this.lineButton.Name = "lineButton";
+            this.lineButton.Size = new System.Drawing.Size(50, 50);
+            this.lineButton.TabIndex = 8;
+            this.lineButton.UseVisualStyleBackColor = true;
+            this.lineButton.Click += new System.EventHandler(this.lineButton_Click);
+            // 
+            // triangleButton
+            // 
+            this.triangleButton.Image = global::Paint.Resource.trin;
+            this.triangleButton.Location = new System.Drawing.Point(253, 14);
+            this.triangleButton.Name = "triangleButton";
+            this.triangleButton.Size = new System.Drawing.Size(50, 50);
+            this.triangleButton.TabIndex = 7;
+            this.triangleButton.UseVisualStyleBackColor = true;
+            // 
+            // rectangleButton
+            // 
+            this.rectangleButton.Image = global::Paint.Resource.rect;
+            this.rectangleButton.Location = new System.Drawing.Point(176, 15);
+            this.rectangleButton.Name = "rectangleButton";
+            this.rectangleButton.Size = new System.Drawing.Size(50, 50);
+            this.rectangleButton.TabIndex = 6;
+            this.rectangleButton.UseVisualStyleBackColor = true;
+            // 
+            // circleButton
+            // 
+            this.circleButton.Image = global::Paint.Resource.circ;
+            this.circleButton.Location = new System.Drawing.Point(97, 14);
+            this.circleButton.Name = "circleButton";
+            this.circleButton.Size = new System.Drawing.Size(50, 50);
+            this.circleButton.TabIndex = 5;
+            this.circleButton.UseVisualStyleBackColor = true;
+            // 
+            // penButton
+            // 
+            this.penButton.Image = global::Paint.Resource.pen;
+            this.penButton.Location = new System.Drawing.Point(18, 14);
+            this.penButton.Name = "penButton";
+            this.penButton.Size = new System.Drawing.Size(50, 50);
+            this.penButton.TabIndex = 4;
+            this.penButton.UseVisualStyleBackColor = true;
+            this.penButton.Click += new System.EventHandler(this.penButton_Click);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(318, 14);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(86, 13);
+            this.label4.TabIndex = 9;
+            this.label4.Text = "Толщина линии";
+            // 
+            // trackBar1
+            // 
+            this.trackBar1.BackColor = System.Drawing.Color.Gray;
+            this.trackBar1.Location = new System.Drawing.Point(307, 37);
+            this.trackBar1.Minimum = 2;
+            this.trackBar1.Name = "trackBar1";
+            this.trackBar1.Size = new System.Drawing.Size(110, 45);
+            this.trackBar1.TabIndex = 10;
+            this.trackBar1.Value = 2;
+            this.trackBar1.Scroll += new System.EventHandler(this.trackBar1_Scroll);
+            // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.label3);
+            this.panel2.Controls.Add(this.palette);
+            this.panel2.Controls.Add(this.label2);
+            this.panel2.Controls.Add(this.colorsPanel);
+            this.panel2.Controls.Add(this.currentColor);
+            this.panel2.Location = new System.Drawing.Point(8, 6);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(261, 84);
+            this.panel2.TabIndex = 9;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(187, 50);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(65, 26);
+            this.label3.TabIndex = 12;
+            this.label3.Text = "Изменение\r\nцвета";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // palette
+            // 
+            this.palette.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.palette.Location = new System.Drawing.Point(206, 17);
+            this.palette.Name = "palette";
+            this.palette.Size = new System.Drawing.Size(30, 30);
+            this.palette.TabIndex = 11;
+            this.palette.TabStop = false;
+            this.palette.Click += new System.EventHandler(this.palette_Click);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(3, 50);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(52, 26);
+            this.label2.TabIndex = 10;
+            this.label2.Text = "Текущий\r\nцвет";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // colorsPanel
             // 
@@ -99,25 +232,6 @@
             this.colorsPanel.Name = "colorsPanel";
             this.colorsPanel.Size = new System.Drawing.Size(121, 78);
             this.colorsPanel.TabIndex = 8;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 50);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(52, 26);
-            this.label2.TabIndex = 10;
-            this.label2.Text = "Текущий\r\nцвет";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
-            // currentColor
-            // 
-            this.currentColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.currentColor.Location = new System.Drawing.Point(12, 17);
-            this.currentColor.Name = "currentColor";
-            this.currentColor.Size = new System.Drawing.Size(30, 30);
-            this.currentColor.TabIndex = 9;
-            this.currentColor.TabStop = false;
             // 
             // label1
             // 
@@ -208,54 +322,35 @@
             this.pictureBox5.TabIndex = 4;
             this.pictureBox5.TabStop = false;
             // 
-            // menuStrip1
+            // currentColor
             // 
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.файлToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1264, 24);
-            this.menuStrip1.TabIndex = 0;
-            this.menuStrip1.Text = "menuStrip1";
-            // 
-            // файлToolStripMenuItem
-            // 
-            this.файлToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.открытьToolStripMenuItem,
-            this.сохранитьToolStripMenuItem,
-            this.создатьToolStripMenuItem});
-            this.файлToolStripMenuItem.Name = "файлToolStripMenuItem";
-            this.файлToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
-            this.файлToolStripMenuItem.Text = "Файл";
-            // 
-            // открытьToolStripMenuItem
-            // 
-            this.открытьToolStripMenuItem.Name = "открытьToolStripMenuItem";
-            this.открытьToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
-            this.открытьToolStripMenuItem.Text = "Открыть";
-            // 
-            // сохранитьToolStripMenuItem
-            // 
-            this.сохранитьToolStripMenuItem.Name = "сохранитьToolStripMenuItem";
-            this.сохранитьToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
-            this.сохранитьToolStripMenuItem.Text = "Сохранить";
-            // 
-            // создатьToolStripMenuItem
-            // 
-            this.создатьToolStripMenuItem.Name = "создатьToolStripMenuItem";
-            this.создатьToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
-            this.создатьToolStripMenuItem.Text = "Создать";
+            this.currentColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.currentColor.Location = new System.Drawing.Point(12, 17);
+            this.currentColor.Name = "currentColor";
+            this.currentColor.Size = new System.Drawing.Size(30, 30);
+            this.currentColor.TabIndex = 9;
+            this.currentColor.TabStop = false;
             // 
             // tabControl1
             // 
+            this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Controls.Add(tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1264, 119);
+            this.tabControl1.Size = new System.Drawing.Size(1264, 118);
             this.tabControl1.TabIndex = 1;
+            // 
+            // tabPage3
+            // 
+            this.tabPage3.BackColor = System.Drawing.Color.DarkGray;
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Size = new System.Drawing.Size(1256, 92);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "Файл";
             // 
             // tabPage2
             // 
@@ -263,80 +358,58 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(1256, 95);
+            this.tabPage2.Size = new System.Drawing.Size(1256, 92);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Фигуры";
+            // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer1.Name = "splitContainer1";
+            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.tabControl1);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.canvas);
+            this.splitContainer1.Size = new System.Drawing.Size(1264, 681);
+            this.splitContainer1.SplitterDistance = 118;
+            this.splitContainer1.SplitterWidth = 10;
+            this.splitContainer1.TabIndex = 11;
             // 
             // canvas
             // 
             this.canvas.BackColor = System.Drawing.Color.White;
             this.canvas.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.canvas.Location = new System.Drawing.Point(0, 24);
+            this.canvas.Location = new System.Drawing.Point(0, 0);
             this.canvas.Name = "canvas";
-            this.canvas.Size = new System.Drawing.Size(1264, 657);
-            this.canvas.TabIndex = 2;
+            this.canvas.Size = new System.Drawing.Size(1264, 553);
+            this.canvas.TabIndex = 0;
             this.canvas.TabStop = false;
-            this.canvas.Paint += new System.Windows.Forms.PaintEventHandler(this.canvas_Paint);
-            this.canvas.MouseDown += new System.Windows.Forms.MouseEventHandler(this.canvas_MouseDown);
-            this.canvas.MouseMove += new System.Windows.Forms.MouseEventHandler(this.canvas_MouseMove);
-            this.canvas.MouseUp += new System.Windows.Forms.MouseEventHandler(this.canvas_MouseUp);
-            // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.tabControl1);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 24);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1264, 150);
-            this.panel1.TabIndex = 3;
-            // 
-            // panel2
-            // 
-            this.panel2.Controls.Add(this.label3);
-            this.panel2.Controls.Add(this.palette);
-            this.panel2.Controls.Add(this.label2);
-            this.panel2.Controls.Add(this.colorsPanel);
-            this.panel2.Controls.Add(this.currentColor);
-            this.panel2.Location = new System.Drawing.Point(8, 6);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(261, 84);
-            this.panel2.TabIndex = 9;
-            // 
-            // palette
-            // 
-            this.palette.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.palette.Location = new System.Drawing.Point(206, 17);
-            this.palette.Name = "palette";
-            this.palette.Size = new System.Drawing.Size(30, 30);
-            this.palette.TabIndex = 11;
-            this.palette.TabStop = false;
-            this.palette.Click += new System.EventHandler(this.palette_Click);
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(187, 50);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(65, 26);
-            this.label3.TabIndex = 12;
-            this.label3.Text = "Изменение\r\nцвета";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1264, 681);
-            this.Controls.Add(this.panel1);
-            this.Controls.Add(this.canvas);
-            this.Controls.Add(this.menuStrip1);
-            this.MainMenuStrip = this.menuStrip1;
+            this.Controls.Add(this.splitContainer1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
             this.Text = "Рисовашка";
             tabPage1.ResumeLayout(false);
+            tabPage1.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.palette)).EndInit();
             this.colorsPanel.ResumeLayout(false);
             this.colorsPanel.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.currentColor)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
@@ -345,30 +418,20 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.currentColor)).EndInit();
             this.tabControl1.ResumeLayout(false);
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.canvas)).EndInit();
-            this.panel1.ResumeLayout(false);
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.palette)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem файлToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem открытьToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem сохранитьToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem создатьToolStripMenuItem;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage2;
-        private System.Windows.Forms.PictureBox canvas;
-        private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.PictureBox pictureBox8;
         private System.Windows.Forms.PictureBox pictureBox7;
         private System.Windows.Forms.PictureBox pictureBox6;
@@ -384,5 +447,16 @@
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.PictureBox palette;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TrackBar trackBar1;
+        private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.PictureBox canvas;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button penButton;
+        private System.Windows.Forms.Button lineButton;
+        private System.Windows.Forms.Button triangleButton;
+        private System.Windows.Forms.Button rectangleButton;
+        private System.Windows.Forms.Button circleButton;
     }
 }

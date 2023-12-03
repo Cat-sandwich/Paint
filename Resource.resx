@@ -117,32 +117,23 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="tabPage1.GenerateMember" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>False</value>
-  </metadata>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        AAABAAEAEBAAAAEAIABoBAAAFgAAACgAAAAQAAAAIAAAAAEAIAAAAAAAAAQAAG8AAABvAAAAAAAAAAAA
-        AAD///8A////AP///wD///8AAAAALCIiIrYnJyfaMTEx4CwsLLUQEBAw////AP///wD///8A////AP//
-        /wD///8A////AP///wAAAAAIHh4em0JCQuvCwsL/4ODg/+Dg4P/S0tL/PT090v///wD///8A////AP//
-        /wD///8A////AP///wD///8AHh4exZqamvvh4eH/39/f/z5KO/9GUET/7Ozs/2RkZOwAAAAf////AP//
-        /wD///8A////AP///wD///8AGhoaioODg/Xq6ur//Pz8/6ipp/80bCn/MFsn/8LCwv+srKz+FBQUdf//
-        /wD///8A////AP///wD///8AAAAAL0NDQ+vp6en///////f39//w8PD/RlJD/01YS//6+vr/7Ozs/yQk
-        JL7///8A////AP///wD///8A////ABcXF4WsrKz/+/v7/zoyKP83Khz/xsXE//////////////////z8
-        /P9OTk7pDg4OtgAAAEgAAAAI////AP///wAjIyPH6enp/+bm5v9ALhr/jVgd/5CKhf//////////////
-        ////////5eXl/6Wlpf9zc3PyNTU14x8fH80AAAAXKysr3/z8/P//////pqKe/311bf/x8fH/////////
-        //////////////v7+//r6+v/5eXl/+Dg4P+9vb3/ISEhwC4uLt//////5eXl/2h4fP+TnJ7//Pz8////
-        ///////////////////8/Pz/npWY/3xrcv/j4+P/7u7u/y4uLt4nJyfJ+vr6/0FYXv8Aps//CW2G/6Wr
-        rP//////////////////////rKep/4YgR//PJWf/XkZP//7+/v8uLi7iJCQkk87Ozv81T1b/AL7u/wWH
-        qP+PmZv/+fn5/56cpP+enKT/+fn5/5uRlf+oIlb/7it3/1Y7Rf/x8fH/JiYmwwgICEBpaWntztDR/z9X
-        Xf9hc3f/9fX1/398iv84IJn/OCCZ/398iv/19fX/d2Vs/11FTv/Rz8//g4OD8BkZGV3///8AHh4eqbi4
-        uPr///////////////9WUmf/Syfi/0sn4v9WUmf/////////////////wsLC+yAgILH///8A////AAAA
-        AAghISHXy8vL/f//////////3d3d/0ZBW/9GQVv/3d3d////////////rKys9iEhIc4AAAAK////AP//
-        /wD///8AAAAAFR8fH6xTU1Pp3t7e//////////////////r6+v/Ozs7/TU1N5hsbG4wAAAAE////AP//
-        /wD///8A////AP///wD///8ABQUFMCMjI64nJyfRNDQ03TMzM9slJSXGHR0djQAAACv///8A////AP//
-        /wD///8A8D8AAMA/AADAHwAAgB8AAAAfAAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAEAAIAB
-        AADAAwAA8A8AAA==
-</value>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="circ" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>img\circ.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>img\icon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="line" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>img\line.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="pen" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>img\pen.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="rect" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>img\rect.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="trin" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>img\trin.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
