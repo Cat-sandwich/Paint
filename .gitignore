@@ -1,0 +1,8 @@
+bin/
+obj/
+Properties/
+App.config
+Paint.*
+Program.cs
+.*
+!/.gitignore
