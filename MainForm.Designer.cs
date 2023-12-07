@@ -58,6 +58,9 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.canvas = new System.Windows.Forms.PictureBox();
+            this.coordinates = new System.Windows.Forms.Label();
+            this.coord = new System.Windows.Forms.Label();
+            this.clearButton = new System.Windows.Forms.Button();
             tabPage1 = new System.Windows.Forms.TabPage();
             tabPage1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -85,6 +88,9 @@
             // tabPage1
             // 
             tabPage1.BackColor = System.Drawing.Color.DarkGray;
+            tabPage1.Controls.Add(this.clearButton);
+            tabPage1.Controls.Add(this.coord);
+            tabPage1.Controls.Add(this.coordinates);
             tabPage1.Controls.Add(this.panel1);
             tabPage1.Controls.Add(this.label4);
             tabPage1.Controls.Add(this.trackBar1);
@@ -126,6 +132,7 @@
             this.triangleButton.Size = new System.Drawing.Size(50, 50);
             this.triangleButton.TabIndex = 7;
             this.triangleButton.UseVisualStyleBackColor = true;
+            this.triangleButton.Click += new System.EventHandler(this.triangleButton_Click);
             // 
             // rectangleButton
             // 
@@ -135,6 +142,7 @@
             this.rectangleButton.Size = new System.Drawing.Size(50, 50);
             this.rectangleButton.TabIndex = 6;
             this.rectangleButton.UseVisualStyleBackColor = true;
+            this.rectangleButton.Click += new System.EventHandler(this.rectangleButton_Click);
             // 
             // circleButton
             // 
@@ -144,6 +152,7 @@
             this.circleButton.Size = new System.Drawing.Size(50, 50);
             this.circleButton.TabIndex = 5;
             this.circleButton.UseVisualStyleBackColor = true;
+            this.circleButton.Click += new System.EventHandler(this.circleButton_Click);
             // 
             // penButton
             // 
@@ -392,6 +401,34 @@
             this.canvas.TabIndex = 0;
             this.canvas.TabStop = false;
             // 
+            // coordinates
+            // 
+            this.coordinates.AutoSize = true;
+            this.coordinates.Location = new System.Drawing.Point(1063, 30);
+            this.coordinates.Name = "coordinates";
+            this.coordinates.Size = new System.Drawing.Size(112, 13);
+            this.coordinates.TabIndex = 11;
+            this.coordinates.Text = "координаты курсора";
+            // 
+            // coord
+            // 
+            this.coord.AutoSize = true;
+            this.coord.Location = new System.Drawing.Point(1063, 57);
+            this.coord.Name = "coord";
+            this.coord.Size = new System.Drawing.Size(89, 13);
+            this.coord.TabIndex = 12;
+            this.coord.Text = "координаты к+н";
+            // 
+            // clearButton
+            // 
+            this.clearButton.Location = new System.Drawing.Point(864, 26);
+            this.clearButton.Name = "clearButton";
+            this.clearButton.Size = new System.Drawing.Size(80, 40);
+            this.clearButton.TabIndex = 13;
+            this.clearButton.Text = "Очистить холст";
+            this.clearButton.UseVisualStyleBackColor = true;
+            this.clearButton.Click += new System.EventHandler(this.clearButton_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -458,5 +495,8 @@
         private System.Windows.Forms.Button triangleButton;
         private System.Windows.Forms.Button rectangleButton;
         private System.Windows.Forms.Button circleButton;
+        private System.Windows.Forms.Label coordinates;
+        private System.Windows.Forms.Label coord;
+        private System.Windows.Forms.Button clearButton;
     }
 }
