@@ -15,7 +15,7 @@ namespace Paint
 {
     public partial class MainForm : Form
     {
-        private PenTool _penTool;
+        private Tool _penTool;
         private Graphics _graphics;
         private Bitmap _bitmap;
         private Color _lineColor;
@@ -26,24 +26,32 @@ namespace Paint
         private MouseEventHandler _mouseDownEvent;
         private MouseEventHandler _mouseMoveEvent;
         private MouseEventHandler _mouseUpEvent;
+        private MouseEventHandler _mouseClickEvent;
         private PaintEventHandler _paintEvent;
-        private Graphics _canvasGraphics;
-
+        private Pen _pen
+        {
+            get
+            {
+                Pen pen = new Pen(_lineColor, trackBar1.Value);
+                pen.DashStyle = DashStyle.Solid;
+                pen.StartCap = LineCap.Round;
+                return pen;
+            }
+        }
         public MainForm()   
         {
             InitializeComponent();
             InitColors();
             tabControl1.SelectedIndex = 1;
             _lineColor = Color.Black;
-            currentColor.BackColor = _lineColor;
-            Pen pen = ReturnCurrentPen();            
+            currentColor.BackColor = _lineColor;        
             _bitmap = new Bitmap(canvas.Width, canvas.Height);
             _graphics = Graphics.FromImage(_bitmap);
-            _penTool = new PenTool(_graphics, pen);
-            _lineTool = new LineTool(_graphics, ReturnCurrentPen());
-            _circleTool = new CircleTool(_graphics, ReturnCurrentPen());
-            _rectTool = new RectangleTool(_graphics, ReturnCurrentPen());
-            _triangleTool = new TriangleTool(_graphics, ReturnCurrentPen());
+            _penTool = new Tool(_graphics);
+            _lineTool = new LineTool(_graphics);
+            _circleTool = new CircleTool(_graphics);
+            _rectTool = new RectangleTool(_graphics);
+            _triangleTool = new TriangleTool(_graphics);
         }
         private void InitColors()
         {
@@ -53,22 +61,10 @@ namespace Paint
                 {
                     _lineColor = ((Control)sender).BackColor;
                     ((Control)sender).Focus();
-                    _penTool.ChangePen(ReturnCurrentPen());
-                    _lineTool.ChangePen(ReturnCurrentPen());
-                    _circleTool.ChangePen(ReturnCurrentPen());
-                    _rectTool.ChangePen(ReturnCurrentPen());
-                    _triangleTool.ChangePen(ReturnCurrentPen());
                     currentColor.BackColor = _lineColor;
                 };
             }
-        }
-        private Pen ReturnCurrentPen()
-        {
-            Pen pen = new Pen(_lineColor, trackBar1.Value);
-            pen.DashStyle = DashStyle.Solid;
-            pen.StartCap = LineCap.Round;
-            return pen;
-        }              
+        }          
 
         private void palette_Click(object sender, EventArgs e)
         {
@@ -78,15 +74,8 @@ namespace Paint
             if (colorDialog.ShowDialog() == DialogResult.OK)
                 _lineColor = colorDialog.Color;
 
-            currentColor.BackColor = _lineColor;
-            _penTool.ChangePen(ReturnCurrentPen());
-            
+            currentColor.BackColor = _lineColor;            
             canvas.Paint += _paintEvent;
-        }
-
-        private void trackBar1_Scroll(object sender, EventArgs e)
-        {
-            _penTool.ChangePen(ReturnCurrentPen());
         }
 
         private void ClearEvents()
@@ -94,14 +83,13 @@ namespace Paint
             canvas.MouseDown -= _mouseDownEvent;
             canvas.MouseMove -= _mouseMoveEvent;
             canvas.MouseUp -= _mouseUpEvent;
-            canvas.Paint -= _paintEvent;
+            canvas.MouseClick -= _mouseClickEvent;
         }
         private void SubEvents()
         {
             canvas.MouseDown += _mouseDownEvent;
             canvas.MouseMove += _mouseMoveEvent;
             canvas.MouseUp += _mouseUpEvent;
-            canvas.Paint += _paintEvent;
         }
 
         private void penButton_Click(object sender, EventArgs e)
@@ -110,7 +98,7 @@ namespace Paint
             _mouseDownEvent = (mySender, myE) => { _penTool.StartDrawing(myE.Location); };
             _mouseMoveEvent = (mySender, myE) =>
             {
-                _penTool.Drawing(myE.Location);
+                _penTool.Draw(_pen, myE.Location);
                 canvas.Invalidate();
             };
             _paintEvent = (mySender, myE) => { canvas.Image = _bitmap; };
@@ -121,24 +109,24 @@ namespace Paint
         private void lineButton_Click(object sender, EventArgs e)
         {
             ClearEvents();
-            _mouseDownEvent = (mySender, myE) => { _lineTool.StartDrawing(myE.Location); };
+            _mouseDownEvent = (mySender, myE) =>
+            {
+                canvas.Paint += _paintEvent;
+                _lineTool.StartDrawing(myE.Location);
+            };
             _mouseMoveEvent = (mySender, myE) =>
             {
-                _lineTool.Paint(myE.Location); 
+                _lineTool.ChangeLastPoint(myE.Location); 
                 canvas.Invalidate();
             };
-            _paintEvent = (mySender, myE) => 
-            {
-                myE.Graphics.DrawLine(ReturnCurrentPen(), _lineTool.StartPoint, _lineTool.EndPoint);
-                _canvasGraphics = myE.Graphics;
-            };
+            _paintEvent = (mySender, myE) => { myE.Graphics.DrawLine(_pen, _lineTool.StartPoint, _lineTool.EndPoint); };
                 
             _mouseUpEvent = (mySender, myE) => 
             {
-                //_canvasGraphics.Clear(canvas.BackColor);
+                canvas.Paint -= _paintEvent;
                 _lineTool.StopDrawing();
-                _lineTool.Draw(myE.Location);
-                canvas.Image = _bitmap;                
+                _lineTool.Draw(_pen, myE.Location);
+                canvas.Image = _bitmap;
             };
             SubEvents();
         }
@@ -146,51 +134,56 @@ namespace Paint
         private void circleButton_Click(object sender, EventArgs e)
         {
             ClearEvents();
-            _mouseDownEvent = (mySender, myE) => { _circleTool.StartDrawing(myE.Location); };
+            _mouseDownEvent = (mySender, myE) =>
+            {
+                canvas.Paint += _paintEvent; 
+                _circleTool.StartDrawing(myE.Location);
+            };
             _mouseMoveEvent = (mySender, myE) =>
             {
-                _circleTool.Paint(myE.Location);
+                _circleTool.ChangeLastPoint(myE.Location);
                 canvas.Invalidate();
             };
             _paintEvent = (mySender, myE) => 
             {
                 Rectangle circleRect = new Rectangle(_circleTool.StartPoint.X, _circleTool.StartPoint.Y,
                     _circleTool.EndPoint.X - _circleTool.StartPoint.X, _circleTool.EndPoint.Y - _circleTool.StartPoint.Y);
-                myE.Graphics.DrawEllipse(ReturnCurrentPen(), circleRect);
-                _canvasGraphics = myE.Graphics;
+                myE.Graphics.DrawEllipse(_pen, circleRect);
             };
             _mouseUpEvent = (mySender, myE) =>
             {
-                //_canvasGraphics.Clear(Color.White);
+                canvas.Paint -= _paintEvent;
                 _circleTool.StopDrawing();
-                _circleTool.Draw(myE.Location);
+                _circleTool.Draw(_pen,myE.Location);
                 canvas.Image = _bitmap;
             };
             SubEvents();
         }
 
+
         private void rectangleButton_Click(object sender, EventArgs e)
         {
 
             ClearEvents();
-            _mouseDownEvent = (mySender, myE) => { _rectTool.StartDrawing(myE.Location); };
+            _mouseDownEvent = (mySender, myE) =>
+            {
+                canvas.Paint += _paintEvent; 
+                _rectTool.StartDrawing(myE.Location);
+            };
             _mouseMoveEvent = (mySender, myE) =>
             {
-                _rectTool.Paint(myE.Location);
+                _rectTool.ChangeLastPoint(myE.Location);
                 canvas.Invalidate();
             };
             _paintEvent = (mySender, myE) =>
             {
-                Rectangle Rect = new Rectangle(_rectTool.StartPoint.X, _rectTool.StartPoint.Y,
-                    _rectTool.EndPoint.X - _rectTool.StartPoint.X, _rectTool.EndPoint.Y - _rectTool.StartPoint.Y);
-                myE.Graphics.DrawRectangle(ReturnCurrentPen(), Rect);
-                _canvasGraphics = myE.Graphics;
+                myE.Graphics.DrawRectangle(_pen, _rectTool.GetRectangle());
             };
             _mouseUpEvent = (mySender, myE) =>
             {
-                //_canvasGraphics.Clear(canvas.BackColor);
+                canvas.Paint -= _paintEvent;
                 _rectTool.StopDrawing();
-                _rectTool.Draw(myE.Location);
+                _rectTool.Draw(_pen, myE.Location);
                 canvas.Image = _bitmap;
             };
             SubEvents();
@@ -201,27 +194,30 @@ namespace Paint
             {
 
                 ClearEvents();
-                _mouseDownEvent = (mySender, myE) => { _triangleTool.StartDrawing(myE.Location); };
+                _mouseDownEvent = (mySender, myE) =>
+                {
+                    canvas.Paint += _paintEvent;
+                    _triangleTool.StartDrawing(myE.Location);
+                };
                 _mouseMoveEvent = (mySender, myE) =>
                 {
-                    _triangleTool.Paint(myE.Location);
+                    _triangleTool.ChangeLastPoint(myE.Location);
                     canvas.Invalidate();
                     coordinates.Text = myE.Location.ToString();
                 };
                 _paintEvent = (mySender, myE) =>
                 {
                     List<Point> points = _triangleTool.GetPoints();
-                    myE.Graphics.DrawLine(ReturnCurrentPen(), points[0], points[1]);
-                    myE.Graphics.DrawLine(ReturnCurrentPen(), points[0], points[2]);
-                    myE.Graphics.DrawLine(ReturnCurrentPen(), points[1], points[2]);
+                    myE.Graphics.DrawLine(_pen, points[0], points[1]);
+                    myE.Graphics.DrawLine(_pen, points[0], points[2]);
+                    myE.Graphics.DrawLine(_pen, points[1], points[2]);
                     coord.Text = $"start: {_triangleTool.StartPoint}, end: {_triangleTool.EndPoint}";
-                    _canvasGraphics = myE.Graphics;
                 };
                 _mouseUpEvent = (mySender, myE) =>
                 {
-                    //_canvasGraphics.Clear(canvas.BackColor);
+                    canvas.Paint -= _paintEvent;
                     _triangleTool.StopDrawing();
-                    _triangleTool.Draw(myE.Location);
+                    _triangleTool.Draw(_pen, myE.Location);
                     canvas.Image = _bitmap;
                 };
                 SubEvents();
@@ -230,7 +226,72 @@ namespace Paint
 
         private void clearButton_Click(object sender, EventArgs e)
         {
+            ClearEvents();
             _graphics.Clear(canvas.BackColor);
+            canvas.Invalidate();    
+            SubEvents();
         }
+
+        private void eraserButton_Click(object sender, EventArgs e)
+        {
+            ClearEvents();
+            _mouseDownEvent = (mySender, myE) => { _penTool.StartDrawing(myE.Location); };
+            _mouseMoveEvent = (mySender, myE) =>
+            {
+                _penTool.Draw(new Pen(canvas.BackColor, trackBar1.Value), myE.Location);
+                canvas.Invalidate();
+            };
+            _paintEvent = (mySender, myE) => { canvas.Image = _bitmap; };
+            _mouseUpEvent = (mySender, myE) => { _penTool.StopDrawing(); };
+            SubEvents();
+        }
+        private void DrawPoint(int x, int y, Color fillColor)
+        {
+            if (x >= 0 && x < _bitmap.Width && y >= 0 && y < _bitmap.Height)
+                _bitmap.SetPixel(x, y, fillColor);
+        }
+        private bool Equals(Color color1, Color color2)
+        {
+            return (color1.R == color2.R) && (color1.G == color2.G)
+                && (color1.B == color2.B) && (color1.A == color2.A);
+        }
+        public void FillByKoroyed(int x, int y, Color fillColor)
+        {
+            Color targetColor = _bitmap.GetPixel(x, y);
+            Stack<(int, int)> stack = new Stack<(int, int)>();
+            stack.Push((x, y));
+            int currentX, currentY;
+
+            while (stack.Count > 0)
+            {
+                (currentX, currentY) = stack.Pop();
+                if (currentX >= 0 && currentX < _bitmap.Width && currentY >= 0 && currentY < _bitmap.Height)
+                {
+                    Color currentColor = _bitmap.GetPixel(currentX, currentY);
+                    if (!Equals(currentColor, fillColor) && Equals(currentColor, targetColor))
+                    {
+                        DrawPoint(currentX, currentY, fillColor);
+                        stack.Push((currentX - 1, currentY));
+                        stack.Push((currentX + 1, currentY));
+                        stack.Push((currentX, currentY - 1));
+                        stack.Push((currentX, currentY + 1));
+                    }
+                }
+            }
+        }
+
+        private void fillButton_Click(object sender, EventArgs e)
+        {
+            ClearEvents();
+            _mouseClickEvent = (mySender, myE) => 
+            { 
+                FillByKoroyed(myE.X, myE.Y, _lineColor);
+                canvas.Invalidate();
+            };
+            canvas.MouseClick += _mouseClickEvent;
+            
+        }
+
+       
     }
 }
