@@ -31,9 +31,10 @@
             System.Windows.Forms.TabPage tabPage1;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.clearButton = new System.Windows.Forms.Button();
-            this.coord = new System.Windows.Forms.Label();
             this.coordinates = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.textButton = new System.Windows.Forms.Button();
+            this.pipetteButton = new System.Windows.Forms.Button();
             this.fillButton = new System.Windows.Forms.Button();
             this.eraserButton = new System.Windows.Forms.Button();
             this.lineButton = new System.Windows.Forms.Button();
@@ -60,8 +61,13 @@
             this.currentColor = new System.Windows.Forms.PictureBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.openFileButton = new System.Windows.Forms.Button();
+            this.saveFileButton = new System.Windows.Forms.Button();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.canvas = new System.Windows.Forms.PictureBox();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.backgroundButton = new System.Windows.Forms.Button();
             tabPage1 = new System.Windows.Forms.TabPage();
             tabPage1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -79,6 +85,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.currentColor)).BeginInit();
             this.tabControl1.SuspendLayout();
+            this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -90,7 +97,6 @@
             // 
             tabPage1.BackColor = System.Drawing.Color.DarkGray;
             tabPage1.Controls.Add(this.clearButton);
-            tabPage1.Controls.Add(this.coord);
             tabPage1.Controls.Add(this.coordinates);
             tabPage1.Controls.Add(this.panel1);
             tabPage1.Controls.Add(this.label4);
@@ -99,13 +105,13 @@
             tabPage1.Location = new System.Drawing.Point(4, 22);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            tabPage1.Size = new System.Drawing.Size(1256, 92);
+            tabPage1.Size = new System.Drawing.Size(1896, 92);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "Инструменты";
             // 
             // clearButton
             // 
-            this.clearButton.Location = new System.Drawing.Point(1025, 25);
+            this.clearButton.Location = new System.Drawing.Point(1196, 21);
             this.clearButton.Name = "clearButton";
             this.clearButton.Size = new System.Drawing.Size(80, 40);
             this.clearButton.TabIndex = 13;
@@ -113,19 +119,10 @@
             this.clearButton.UseVisualStyleBackColor = true;
             this.clearButton.Click += new System.EventHandler(this.clearButton_Click);
             // 
-            // coord
-            // 
-            this.coord.AutoSize = true;
-            this.coord.Location = new System.Drawing.Point(1126, 53);
-            this.coord.Name = "coord";
-            this.coord.Size = new System.Drawing.Size(89, 13);
-            this.coord.TabIndex = 12;
-            this.coord.Text = "координаты к+н";
-            // 
             // coordinates
             // 
             this.coordinates.AutoSize = true;
-            this.coordinates.Location = new System.Drawing.Point(1126, 26);
+            this.coordinates.Location = new System.Drawing.Point(1193, 69);
             this.coordinates.Name = "coordinates";
             this.coordinates.Size = new System.Drawing.Size(112, 13);
             this.coordinates.TabIndex = 11;
@@ -133,6 +130,8 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.textButton);
+            this.panel1.Controls.Add(this.pipetteButton);
             this.panel1.Controls.Add(this.fillButton);
             this.panel1.Controls.Add(this.eraserButton);
             this.panel1.Controls.Add(this.lineButton);
@@ -142,8 +141,28 @@
             this.panel1.Controls.Add(this.penButton);
             this.panel1.Location = new System.Drawing.Point(444, 6);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(560, 80);
+            this.panel1.Size = new System.Drawing.Size(708, 80);
             this.panel1.TabIndex = 0;
+            // 
+            // textButton
+            // 
+            this.textButton.Image = global::Paint.Resource.text;
+            this.textButton.Location = new System.Drawing.Point(637, 15);
+            this.textButton.Name = "textButton";
+            this.textButton.Size = new System.Drawing.Size(50, 50);
+            this.textButton.TabIndex = 12;
+            this.textButton.UseVisualStyleBackColor = true;
+            this.textButton.Click += new System.EventHandler(this.textButton_Click);
+            // 
+            // pipetteButton
+            // 
+            this.pipetteButton.Image = global::Paint.Resource.pipetka;
+            this.pipetteButton.Location = new System.Drawing.Point(561, 15);
+            this.pipetteButton.Name = "pipetteButton";
+            this.pipetteButton.Size = new System.Drawing.Size(50, 50);
+            this.pipetteButton.TabIndex = 11;
+            this.pipetteButton.UseVisualStyleBackColor = true;
+            this.pipetteButton.Click += new System.EventHandler(this.pipetteButton_Click);
             // 
             // fillButton
             // 
@@ -404,11 +423,34 @@
             // tabPage3
             // 
             this.tabPage3.BackColor = System.Drawing.Color.DarkGray;
+            this.tabPage3.Controls.Add(this.backgroundButton);
+            this.tabPage3.Controls.Add(this.openFileButton);
+            this.tabPage3.Controls.Add(this.saveFileButton);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Size = new System.Drawing.Size(1896, 92);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Файл";
+            // 
+            // openFileButton
+            // 
+            this.openFileButton.Location = new System.Drawing.Point(139, 19);
+            this.openFileButton.Name = "openFileButton";
+            this.openFileButton.Size = new System.Drawing.Size(85, 47);
+            this.openFileButton.TabIndex = 1;
+            this.openFileButton.Text = "Открыть\r\nфайл";
+            this.openFileButton.UseVisualStyleBackColor = true;
+            this.openFileButton.Click += new System.EventHandler(this.openFileButton_Click);
+            // 
+            // saveFileButton
+            // 
+            this.saveFileButton.Location = new System.Drawing.Point(24, 19);
+            this.saveFileButton.Name = "saveFileButton";
+            this.saveFileButton.Size = new System.Drawing.Size(85, 47);
+            this.saveFileButton.TabIndex = 0;
+            this.saveFileButton.Text = "Сохранить\r\nфайл";
+            this.saveFileButton.UseVisualStyleBackColor = true;
+            this.saveFileButton.Click += new System.EventHandler(this.saveFileButton_Click);
             // 
             // splitContainer1
             // 
@@ -439,6 +481,20 @@
             this.canvas.TabIndex = 0;
             this.canvas.TabStop = false;
             // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
+            // 
+            // backgroundButton
+            // 
+            this.backgroundButton.Location = new System.Drawing.Point(257, 19);
+            this.backgroundButton.Name = "backgroundButton";
+            this.backgroundButton.Size = new System.Drawing.Size(85, 47);
+            this.backgroundButton.TabIndex = 2;
+            this.backgroundButton.Text = "Выбрать\r\nфон";
+            this.backgroundButton.UseVisualStyleBackColor = true;
+            this.backgroundButton.Click += new System.EventHandler(this.backgroundButton_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -467,6 +523,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.currentColor)).EndInit();
             this.tabControl1.ResumeLayout(false);
+            this.tabPage3.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
@@ -505,9 +562,15 @@
         private System.Windows.Forms.Button rectangleButton;
         private System.Windows.Forms.Button circleButton;
         private System.Windows.Forms.Label coordinates;
-        private System.Windows.Forms.Label coord;
         private System.Windows.Forms.Button clearButton;
         private System.Windows.Forms.Button eraserButton;
         private System.Windows.Forms.Button fillButton;
+        private System.Windows.Forms.Button pipetteButton;
+        private System.Windows.Forms.Button textButton;
+        private System.Windows.Forms.Button openFileButton;
+        private System.Windows.Forms.Button saveFileButton;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.Button backgroundButton;
     }
 }

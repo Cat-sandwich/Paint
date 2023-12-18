@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics.Tracing;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
@@ -10,6 +11,8 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Net.Mime.MediaTypeNames;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Paint
 {
@@ -28,6 +31,8 @@ namespace Paint
         private MouseEventHandler _mouseUpEvent;
         private MouseEventHandler _mouseClickEvent;
         private PaintEventHandler _paintEvent;
+        private System.Windows.Forms.TextBox textBox;
+        private FontDialog _fontDialog;
         private Pen _pen
         {
             get
@@ -52,7 +57,18 @@ namespace Paint
             _circleTool = new CircleTool(_graphics);
             _rectTool = new RectangleTool(_graphics);
             _triangleTool = new TriangleTool(_graphics);
+            InitTextBox();
         }
+
+        private void InitTextBox()
+        {
+            textBox = new System.Windows.Forms.TextBox();
+            textBox.Multiline = true;
+            textBox.Visible = false;
+            textBox.KeyPress += TextBox_KeyPress;
+            this.Controls.Add(textBox);
+        }
+        
         private void InitColors()
         {
             foreach (Control control in colorsPanel.Controls)
@@ -211,7 +227,6 @@ namespace Paint
                     myE.Graphics.DrawLine(_pen, points[0], points[1]);
                     myE.Graphics.DrawLine(_pen, points[0], points[2]);
                     myE.Graphics.DrawLine(_pen, points[1], points[2]);
-                    coord.Text = $"start: {_triangleTool.StartPoint}, end: {_triangleTool.EndPoint}";
                 };
                 _mouseUpEvent = (mySender, myE) =>
                 {
@@ -292,6 +307,101 @@ namespace Paint
             
         }
 
-       
+        private void pipetteButton_Click(object sender, EventArgs e)
+        {
+            ClearEvents();
+            _mouseClickEvent = (mySender, myE) =>
+            {               
+                Color colorPipette = _bitmap.GetPixel(myE.X, myE.Y);
+                currentColor.BackColor = colorPipette;
+                _lineColor = colorPipette;
+            };
+            canvas.MouseClick += _mouseClickEvent;
+
+        }
+
+        private void textButton_Click(object sender, EventArgs e)
+        {
+            ClearEvents();
+            _fontDialog = new FontDialog();
+            if (_fontDialog.ShowDialog() == DialogResult.OK)
+            {
+                
+                _mouseClickEvent = (mySender, myE) =>
+                {
+                    textBox.Location = myE.Location;
+                    textBox.Visible = true;
+                    textBox.Focus();
+                    canvas.Invalidate(true);
+
+                };
+            }
+            canvas.MouseClick += _mouseClickEvent;
+        }
+
+
+        private void TextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Enter)
+            {
+               
+                _graphics.DrawString(textBox.Text, _fontDialog.Font, _pen.Brush, textBox.Location);
+                textBox.Visible = false;
+
+                textBox.Text = string.Empty;
+
+                canvas.Invalidate();
+                    
+                
+            }
+        }
+
+        private void saveFileButton_Click(object sender, EventArgs e)
+        {
+            saveFileDialog1.Filter = "PNG(*.PNG)|*.PNG";
+            if(saveFileDialog1.ShowDialog() == DialogResult.OK) 
+            {
+                if(canvas.Image != null) 
+                {
+                    canvas.Image.Save(saveFileDialog1.FileName);
+                }
+            }
+        }
+
+        private void openFileButton_Click(object sender, EventArgs e)
+        {
+            openFileDialog1.Filter = "PNG(*.PNG)|*.PNG";
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    canvas.Image = new Bitmap(openFileDialog1.FileName);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Ошибка при загрузке изображения: " + ex.Message);
+                }
+            }
+            canvas.Invalidate();
+        }
+
+        private void backgroundButton_Click(object sender, EventArgs e)
+        {
+            openFileDialog1.Filter = "Изображения (*.jpg;*.jpeg;*.png;*.bmp)|*.jpg;*.jpeg;*.png;*.bmp|Все файлы (*.*)|*.*";
+
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    // Устанавливаем изображение как фон формы
+                    canvas.BackgroundImage = new Bitmap(System.Drawing.Image.FromFile(openFileDialog1.FileName));
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Ошибка при загрузке изображения: " + ex.Message);
+                }
+            }
+            canvas.Invalidate();
+        }
     }
 }
