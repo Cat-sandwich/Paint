@@ -11,28 +11,40 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Net.Mime.MediaTypeNames;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Paint
 {
     public partial class MainForm : Form
     {
-        private Tool _penTool;
-        private Graphics _graphics;
-        private Bitmap _bitmap;
-        private Color _lineColor;
+        private Tool _penTool;        
         private LineTool _lineTool;
         private CircleTool _circleTool;
         private RectangleTool _rectTool;
         private TriangleTool _triangleTool;
+
+        private Graphics _graphics;
+        private Stack <Bitmap> _bitmaps;
+        private Bitmap _bitmap;
+       
+        private Color _lineColor;
+
         private MouseEventHandler _mouseDownEvent;
         private MouseEventHandler _mouseMoveEvent;
         private MouseEventHandler _mouseUpEvent;
         private MouseEventHandler _mouseClickEvent;
+        private KeyPressEventHandler _textBoxKeyPressEvent;
         private PaintEventHandler _paintEvent;
-        private System.Windows.Forms.TextBox textBox;
-        private FontDialog _fontDialog;
+        private MouseEventHandler _selectedAreaMouseDown;
+        private MouseEventHandler _selectedAreaMouseMove;
+        private MouseEventHandler _selectedAreaMouseUp;
+
+        private Label _currentTextLabel;
+        private Font _font;
+        private bool _isWriting;
+        
+        private PictureBox _selectedArea;
+        private bool _isDragging;
+        private Point _startAllocatePoint;
         private Pen _pen
         {
             get
@@ -43,32 +55,33 @@ namespace Paint
                 return pen;
             }
         }
-        public MainForm()   
+
+       
+        public MainForm()
         {
             InitializeComponent();
             InitColors();
             tabControl1.SelectedIndex = 1;
             _lineColor = Color.Black;
-            currentColor.BackColor = _lineColor;        
+            currentColor.BackColor = _lineColor;
+            _bitmaps = new Stack<Bitmap>();
             _bitmap = new Bitmap(canvas.Width, canvas.Height);
+            _bitmaps.Push(new Bitmap(_bitmap));
+            InitTools();
+            _font = new Font("Arial", 16, FontStyle.Regular);
+            _currentTextLabel = new Label();
+        }
+
+        private void InitTools()
+        {
             _graphics = Graphics.FromImage(_bitmap);
             _penTool = new Tool(_graphics);
             _lineTool = new LineTool(_graphics);
             _circleTool = new CircleTool(_graphics);
             _rectTool = new RectangleTool(_graphics);
             _triangleTool = new TriangleTool(_graphics);
-            InitTextBox();
         }
 
-        private void InitTextBox()
-        {
-            textBox = new System.Windows.Forms.TextBox();
-            textBox.Multiline = true;
-            textBox.Visible = false;
-            textBox.KeyPress += TextBox_KeyPress;
-            this.Controls.Add(textBox);
-        }
-        
         private void InitColors()
         {
             foreach (Control control in colorsPanel.Controls)
@@ -80,17 +93,17 @@ namespace Paint
                     currentColor.BackColor = _lineColor;
                 };
             }
-        }          
+        }
 
         private void palette_Click(object sender, EventArgs e)
         {
 
             ColorDialog colorDialog = new ColorDialog();
-            canvas.Paint -= _paintEvent;
+            canvas.Paint -= canvas_Paint;
             if (colorDialog.ShowDialog() == DialogResult.OK)
                 _lineColor = colorDialog.Color;
 
-            currentColor.BackColor = _lineColor;            
+            currentColor.BackColor = _lineColor;
             canvas.Paint += _paintEvent;
         }
 
@@ -100,6 +113,7 @@ namespace Paint
             canvas.MouseMove -= _mouseMoveEvent;
             canvas.MouseUp -= _mouseUpEvent;
             canvas.MouseClick -= _mouseClickEvent;
+            _currentTextLabel.KeyPress -= _textBoxKeyPressEvent;
         }
         private void SubEvents()
         {
@@ -111,14 +125,20 @@ namespace Paint
         private void penButton_Click(object sender, EventArgs e)
         {
             ClearEvents();
-            _mouseDownEvent = (mySender, myE) => { _penTool.StartDrawing(myE.Location); };
+            _mouseDownEvent = (mySender, myE) =>
+            {
+                _penTool.StartDrawing(myE.Location);
+            };
             _mouseMoveEvent = (mySender, myE) =>
             {
                 _penTool.Draw(_pen, myE.Location);
                 canvas.Invalidate();
             };
-            _paintEvent = (mySender, myE) => { canvas.Image = _bitmap; };
-            _mouseUpEvent = (mySender, myE) => { _penTool.StopDrawing(); };
+            _mouseUpEvent = (mySender, myE) =>
+            {
+                _penTool.StopDrawing();
+                _bitmaps.Push(new Bitmap(_bitmap));
+            };
             SubEvents();
         }
 
@@ -132,17 +152,23 @@ namespace Paint
             };
             _mouseMoveEvent = (mySender, myE) =>
             {
-                _lineTool.ChangeLastPoint(myE.Location); 
+                if (_lineTool.IsDrawing == false) return;
+                _lineTool.ChangeLastPoint(myE.Location);
                 canvas.Invalidate();
             };
-            _paintEvent = (mySender, myE) => { myE.Graphics.DrawLine(_pen, _lineTool.StartPoint, _lineTool.EndPoint); };
-                
-            _mouseUpEvent = (mySender, myE) => 
+            _paintEvent = (mySender, myE) => 
+            { 
+                if(_lineTool.IsDrawing == false) return;
+                myE.Graphics.DrawLine(_pen, _lineTool.StartPoint, _lineTool.EndPoint);
+            };
+
+            _mouseUpEvent = (mySender, myE) =>
             {
                 canvas.Paint -= _paintEvent;
                 _lineTool.StopDrawing();
                 _lineTool.Draw(_pen, myE.Location);
-                canvas.Image = _bitmap;
+                canvas.Invalidate();
+                _bitmaps.Push(new Bitmap(_bitmap));
             };
             SubEvents();
         }
@@ -152,7 +178,7 @@ namespace Paint
             ClearEvents();
             _mouseDownEvent = (mySender, myE) =>
             {
-                canvas.Paint += _paintEvent; 
+                canvas.Paint += _paintEvent;
                 _circleTool.StartDrawing(myE.Location);
             };
             _mouseMoveEvent = (mySender, myE) =>
@@ -160,7 +186,7 @@ namespace Paint
                 _circleTool.ChangeLastPoint(myE.Location);
                 canvas.Invalidate();
             };
-            _paintEvent = (mySender, myE) => 
+            _paintEvent = (mySender, myE) =>
             {
                 Rectangle circleRect = new Rectangle(_circleTool.StartPoint.X, _circleTool.StartPoint.Y,
                     _circleTool.EndPoint.X - _circleTool.StartPoint.X, _circleTool.EndPoint.Y - _circleTool.StartPoint.Y);
@@ -170,20 +196,18 @@ namespace Paint
             {
                 canvas.Paint -= _paintEvent;
                 _circleTool.StopDrawing();
-                _circleTool.Draw(_pen,myE.Location);
-                canvas.Image = _bitmap;
+                _circleTool.Draw(_pen, myE.Location);
+                canvas.Invalidate();
+                _bitmaps.Push(new Bitmap(_bitmap));
             };
             SubEvents();
         }
-
-
         private void rectangleButton_Click(object sender, EventArgs e)
         {
-
             ClearEvents();
             _mouseDownEvent = (mySender, myE) =>
             {
-                canvas.Paint += _paintEvent; 
+                canvas.Paint += _paintEvent;
                 _rectTool.StartDrawing(myE.Location);
             };
             _mouseMoveEvent = (mySender, myE) =>
@@ -200,11 +224,11 @@ namespace Paint
                 canvas.Paint -= _paintEvent;
                 _rectTool.StopDrawing();
                 _rectTool.Draw(_pen, myE.Location);
-                canvas.Image = _bitmap;
+                canvas.Invalidate();
+                _bitmaps.Push(new Bitmap(_bitmap));
             };
             SubEvents();
         }
-
         private void triangleButton_Click(object sender, EventArgs e)
         {
             {
@@ -233,7 +257,8 @@ namespace Paint
                     canvas.Paint -= _paintEvent;
                     _triangleTool.StopDrawing();
                     _triangleTool.Draw(_pen, myE.Location);
-                    canvas.Image = _bitmap;
+                    canvas.Invalidate();
+                    _bitmaps.Push(new Bitmap(_bitmap));
                 };
                 SubEvents();
             }
@@ -241,10 +266,12 @@ namespace Paint
 
         private void clearButton_Click(object sender, EventArgs e)
         {
-            ClearEvents();
             _graphics.Clear(canvas.BackColor);
-            canvas.Invalidate();    
-            SubEvents();
+            _bitmaps.Clear();
+            _bitmap = new Bitmap(canvas.Width, canvas.Height);
+            _bitmaps.Push(new Bitmap(_bitmap));
+            InitTools();
+            canvas.Invalidate();
         }
 
         private void eraserButton_Click(object sender, EventArgs e)
@@ -256,8 +283,11 @@ namespace Paint
                 _penTool.Draw(new Pen(canvas.BackColor, trackBar1.Value), myE.Location);
                 canvas.Invalidate();
             };
-            _paintEvent = (mySender, myE) => { canvas.Image = _bitmap; };
-            _mouseUpEvent = (mySender, myE) => { _penTool.StopDrawing(); };
+            _mouseUpEvent = (mySender, myE) => 
+            { 
+                _penTool.StopDrawing();
+                _bitmaps.Push(new Bitmap(_bitmap));
+            };
             SubEvents();
         }
         private void DrawPoint(int x, int y, Color fillColor)
@@ -298,20 +328,21 @@ namespace Paint
         private void fillButton_Click(object sender, EventArgs e)
         {
             ClearEvents();
-            _mouseClickEvent = (mySender, myE) => 
-            { 
+            _mouseClickEvent = (mySender, myE) =>
+            {
                 FillByKoroyed(myE.X, myE.Y, _lineColor);
                 canvas.Invalidate();
+                _bitmaps.Push(new Bitmap(_bitmap));
             };
             canvas.MouseClick += _mouseClickEvent;
-            
+
         }
 
         private void pipetteButton_Click(object sender, EventArgs e)
         {
             ClearEvents();
             _mouseClickEvent = (mySender, myE) =>
-            {               
+            {
                 Color colorPipette = _bitmap.GetPixel(myE.X, myE.Y);
                 currentColor.BackColor = colorPipette;
                 _lineColor = colorPipette;
@@ -319,49 +350,13 @@ namespace Paint
             canvas.MouseClick += _mouseClickEvent;
 
         }
-
-        private void textButton_Click(object sender, EventArgs e)
-        {
-            ClearEvents();
-            _fontDialog = new FontDialog();
-            if (_fontDialog.ShowDialog() == DialogResult.OK)
-            {
-                
-                _mouseClickEvent = (mySender, myE) =>
-                {
-                    textBox.Location = myE.Location;
-                    textBox.Visible = true;
-                    textBox.Focus();
-                    canvas.Invalidate(true);
-
-                };
-            }
-            canvas.MouseClick += _mouseClickEvent;
-        }
-
-
-        private void TextBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (e.KeyChar == (char)Keys.Enter)
-            {
-               
-                _graphics.DrawString(textBox.Text, _fontDialog.Font, _pen.Brush, textBox.Location);
-                textBox.Visible = false;
-
-                textBox.Text = string.Empty;
-
-                canvas.Invalidate();
-                    
-                
-            }
-        }
-
+        
         private void saveFileButton_Click(object sender, EventArgs e)
         {
             saveFileDialog1.Filter = "PNG(*.PNG)|*.PNG";
-            if(saveFileDialog1.ShowDialog() == DialogResult.OK) 
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                if(canvas.Image != null) 
+                if (canvas.Image != null)
                 {
                     canvas.Image.Save(saveFileDialog1.FileName);
                 }
@@ -394,7 +389,7 @@ namespace Paint
                 try
                 {
                     // Устанавливаем изображение как фон формы
-                    canvas.BackgroundImage = new Bitmap(System.Drawing.Image.FromFile(openFileDialog1.FileName));
+                    canvas.BackgroundImage = new Bitmap(Image.FromFile(openFileDialog1.FileName));
                 }
                 catch (Exception ex)
                 {
@@ -403,5 +398,198 @@ namespace Paint
             }
             canvas.Invalidate();
         }
+        private void InitTextLabel()
+        {
+            _currentTextLabel = new Label();
+            
+            _currentTextLabel.Visible = false;
+            _currentTextLabel.Font = _font;
+            _currentTextLabel.AutoSize = true;
+            _currentTextLabel.BackColor = canvas.BackColor;            
+            splitContainer1.Panel2.Controls.Add(_currentTextLabel);
+            _currentTextLabel.BringToFront();
+        }
+
+        private void textButton_Click(object sender, EventArgs e)
+        {
+            ClearEvents();
+            _textBoxKeyPressEvent = (mySender, myE) =>
+            {
+                _isWriting = true;
+                if (myE.KeyChar == (char)Keys.Enter)
+                {
+                    _isWriting = false;
+                    _currentTextLabel.BorderStyle = BorderStyle.None;
+                    _graphics.DrawString(_currentTextLabel.Text, _font, _pen.Brush, _currentTextLabel.Location);
+                    canvas.Invalidate();
+                    _bitmaps.Push(new Bitmap(_bitmap));
+                    splitContainer1.Panel2.Controls.Remove(_currentTextLabel);
+                }
+                else
+                {
+                    _currentTextLabel.ForeColor = _lineColor;
+                    _currentTextLabel.BorderStyle = BorderStyle.FixedSingle;
+                    _currentTextLabel.Visible = true;
+                    _currentTextLabel.Text += myE.KeyChar;
+                }
+            };
+
+            _mouseClickEvent = (mySender, myE) =>
+            {
+                if (_isWriting)
+                {
+                    _isWriting = false;
+                    _currentTextLabel.BorderStyle = BorderStyle.None;
+                    _graphics.DrawString(_currentTextLabel.Text, _font, _pen.Brush, _currentTextLabel.Location);
+                    canvas.Invalidate();
+                    _bitmaps.Push(new Bitmap(_bitmap));
+                    splitContainer1.Panel2.Controls.Remove(_currentTextLabel);
+                }
+                else
+                {
+                    InitTextLabel();
+                    _currentTextLabel.Location = myE.Location;
+                    _currentTextLabel.Visible = true;
+                    _currentTextLabel.Focus();
+                    _currentTextLabel.KeyPress += _textBoxKeyPressEvent;
+                }              
+
+            };
+            canvas.MouseClick += _mouseClickEvent;
+        }
+        private void stileTextButton_Click(object sender, EventArgs e)
+        {
+            canvas.Paint -= canvas_Paint;
+            FontDialog fontDialog = new FontDialog();
+            if (fontDialog.ShowDialog() == DialogResult.OK)
+            {
+                _font = fontDialog.Font;    
+            }
+            canvas.Paint += canvas_Paint;
+        }
+
+        private void canvas_Paint(object sender, PaintEventArgs e)
+        {
+            canvas.Image = _bitmap;
+        }
+        private void PlaceSelectedArea()
+        {
+            _isDragging = false;
+            _selectedArea.MouseDown -= _selectedAreaMouseDown;
+            _selectedArea.MouseMove -= _selectedAreaMouseMove;
+            _selectedArea.MouseUp -= _selectedAreaMouseUp;
+
+            _graphics.DrawImage(_selectedArea.Image, _selectedArea.Location);
+            _bitmaps.Push(new Bitmap(_bitmap));
+            splitContainer1.Panel2.Controls.Remove(_selectedArea);
+            _selectedArea = null;
+            canvas.Invalidate();
+        }
+
+        private void InitDragSelectedAreaIvents()
+        {
+            _selectedAreaMouseDown = (mySender, myE) =>
+            {
+                if (myE.Button == MouseButtons.Left)
+                {
+                    _startAllocatePoint = myE.Location;
+                    _isDragging = true;
+                }
+            };
+            _selectedAreaMouseMove = (mySender, myE) =>
+            {
+                if (_isDragging)
+                {
+                    int deltaX = myE.X - _startAllocatePoint.X;
+                    int deltaY = myE.Y - _startAllocatePoint.Y;
+                    _selectedArea.Location = new Point(_selectedArea.Location.X + deltaX, _selectedArea.Location.Y + deltaY);
+                }
+
+            };
+            _selectedAreaMouseUp = (mySender, myE) =>
+            {
+                PlaceSelectedArea();
+                InitAllocateIvents(new Pen(Color.Blue, 3f));
+            };
+            _selectedArea.MouseDown += _selectedAreaMouseDown;
+            _selectedArea.MouseMove += _selectedAreaMouseMove;
+            _selectedArea.MouseUp += _selectedAreaMouseUp;
+        }
+        private void InitSelectedArea()
+        {           
+            _selectedArea = new PictureBox();
+            _selectedArea.Location = _rectTool.GetRectangle().Location;
+            _selectedArea.Size = _rectTool.GetRectangle().Size;
+            _selectedArea.BackColor = canvas.BackColor;
+            _selectedArea.BorderStyle = BorderStyle.FixedSingle;
+        }
+        private void CopyImageOnSelectedArea()
+        {
+            InitSelectedArea();
+            Bitmap selectedBitmap = new Bitmap(_selectedArea.Width, _selectedArea.Height);
+
+            using (Graphics g = Graphics.FromImage(selectedBitmap))
+            {
+                g.DrawImage(_bitmap, 0, 0, _rectTool.GetRectangle(), GraphicsUnit.Pixel);
+            }
+            _selectedArea.Image = selectedBitmap;
+            splitContainer1.Panel2.Controls.Add(_selectedArea);
+            _selectedArea.BringToFront();
+        }
+        private void InitAllocateIvents(Pen pen)
+        {
+            ClearEvents();
+            _mouseDownEvent = (mySender, myE) =>
+            {
+                canvas.Paint += _paintEvent;
+                _rectTool.StartDrawing(myE.Location);
+            };
+            _mouseMoveEvent = (mySender, myE) =>
+            {
+                _rectTool.ChangeLastPoint(myE.Location);
+                canvas.Invalidate();
+            };
+            _paintEvent = (mySender, myE) =>
+            {
+                myE.Graphics.DrawRectangle(pen, _rectTool.GetRectangle());
+            };
+            _mouseUpEvent = (mySender, myE) =>
+            {
+                if (_selectedArea != null)
+                    PlaceSelectedArea();
+                CopyImageOnSelectedArea();
+                canvas.Paint -= _paintEvent;
+                _rectTool.StopDrawing();
+                canvas.Invalidate();
+                InitDragSelectedAreaIvents();
+            };
+            SubEvents();
+        }
+        private void allocateButton_Click(object sender, EventArgs e)
+        {
+            Pen pen = new Pen(Color.Blue, 3f);
+            pen.DashStyle = DashStyle.Dash;
+            InitAllocateIvents(pen);
+        }
+
+
+        private void canselButton_Click(object sender, EventArgs e)
+        {
+            if (_bitmaps.Count <= 1)
+                return;
+
+            _bitmaps.Pop();
+            _bitmap = _bitmaps.Peek();
+            _graphics.Clear(canvas.BackColor);
+            InitTools();
+
+            canvas.Invalidate();
+        }
+
+        private void canvas_Click(object sender, EventArgs e)
+        {
+
+        }
     }
+
 }

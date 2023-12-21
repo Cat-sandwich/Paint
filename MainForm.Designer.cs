@@ -30,18 +30,24 @@
         {
             System.Windows.Forms.TabPage tabPage1;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.canselButton = new System.Windows.Forms.Button();
+            this.label6 = new System.Windows.Forms.Label();
+            this.allocateButton = new System.Windows.Forms.Button();
+            this.stileTextButton = new System.Windows.Forms.Button();
+            this.pipetteButton = new System.Windows.Forms.Button();
+            this.fillButton = new System.Windows.Forms.Button();
+            this.textButton = new System.Windows.Forms.Button();
+            this.eraserButton = new System.Windows.Forms.Button();
+            this.penButton = new System.Windows.Forms.Button();
             this.clearButton = new System.Windows.Forms.Button();
             this.coordinates = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.textButton = new System.Windows.Forms.Button();
-            this.pipetteButton = new System.Windows.Forms.Button();
-            this.fillButton = new System.Windows.Forms.Button();
-            this.eraserButton = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
             this.lineButton = new System.Windows.Forms.Button();
             this.triangleButton = new System.Windows.Forms.Button();
             this.rectangleButton = new System.Windows.Forms.Button();
             this.circleButton = new System.Windows.Forms.Button();
-            this.penButton = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.trackBar1 = new System.Windows.Forms.TrackBar();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -61,15 +67,16 @@
             this.currentColor = new System.Windows.Forms.PictureBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.backgroundButton = new System.Windows.Forms.Button();
             this.openFileButton = new System.Windows.Forms.Button();
             this.saveFileButton = new System.Windows.Forms.Button();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.canvas = new System.Windows.Forms.PictureBox();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.backgroundButton = new System.Windows.Forms.Button();
             tabPage1 = new System.Windows.Forms.TabPage();
             tabPage1.SuspendLayout();
+            this.panel3.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.panel2.SuspendLayout();
@@ -96,6 +103,7 @@
             // tabPage1
             // 
             tabPage1.BackColor = System.Drawing.Color.DarkGray;
+            tabPage1.Controls.Add(this.panel3);
             tabPage1.Controls.Add(this.clearButton);
             tabPage1.Controls.Add(this.coordinates);
             tabPage1.Controls.Add(this.panel1);
@@ -109,9 +117,114 @@
             tabPage1.TabIndex = 0;
             tabPage1.Text = "Инструменты";
             // 
+            // panel3
+            // 
+            this.panel3.Controls.Add(this.canselButton);
+            this.panel3.Controls.Add(this.label6);
+            this.panel3.Controls.Add(this.allocateButton);
+            this.panel3.Controls.Add(this.stileTextButton);
+            this.panel3.Controls.Add(this.pipetteButton);
+            this.panel3.Controls.Add(this.fillButton);
+            this.panel3.Controls.Add(this.textButton);
+            this.panel3.Controls.Add(this.eraserButton);
+            this.panel3.Controls.Add(this.penButton);
+            this.panel3.Location = new System.Drawing.Point(662, 7);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(455, 80);
+            this.panel3.TabIndex = 14;
+            // 
+            // canselButton
+            // 
+            this.canselButton.Image = global::Paint.Resource.cansel;
+            this.canselButton.Location = new System.Drawing.Point(283, 23);
+            this.canselButton.Name = "canselButton";
+            this.canselButton.Size = new System.Drawing.Size(50, 50);
+            this.canselButton.TabIndex = 17;
+            this.canselButton.UseVisualStyleBackColor = true;
+            this.canselButton.Click += new System.EventHandler(this.canselButton_Click);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(143, 7);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(119, 13);
+            this.label6.TabIndex = 16;
+            this.label6.Text = "Панель инструментов";
+            // 
+            // allocateButton
+            // 
+            this.allocateButton.Image = global::Paint.Resource.allocation;
+            this.allocateButton.Location = new System.Drawing.Point(227, 23);
+            this.allocateButton.Name = "allocateButton";
+            this.allocateButton.Size = new System.Drawing.Size(50, 50);
+            this.allocateButton.TabIndex = 14;
+            this.allocateButton.UseVisualStyleBackColor = true;
+            this.allocateButton.Click += new System.EventHandler(this.allocateButton_Click);
+            // 
+            // stileTextButton
+            // 
+            this.stileTextButton.Location = new System.Drawing.Point(395, 37);
+            this.stileTextButton.Name = "stileTextButton";
+            this.stileTextButton.Size = new System.Drawing.Size(51, 37);
+            this.stileTextButton.TabIndex = 13;
+            this.stileTextButton.Text = "стиль\r\nтекста";
+            this.stileTextButton.UseVisualStyleBackColor = true;
+            this.stileTextButton.Click += new System.EventHandler(this.stileTextButton_Click);
+            // 
+            // pipetteButton
+            // 
+            this.pipetteButton.Image = global::Paint.Resource.pipetka;
+            this.pipetteButton.Location = new System.Drawing.Point(171, 23);
+            this.pipetteButton.Name = "pipetteButton";
+            this.pipetteButton.Size = new System.Drawing.Size(50, 50);
+            this.pipetteButton.TabIndex = 11;
+            this.pipetteButton.UseVisualStyleBackColor = true;
+            this.pipetteButton.Click += new System.EventHandler(this.pipetteButton_Click);
+            // 
+            // fillButton
+            // 
+            this.fillButton.Image = global::Paint.Resource.fill;
+            this.fillButton.Location = new System.Drawing.Point(115, 23);
+            this.fillButton.Name = "fillButton";
+            this.fillButton.Size = new System.Drawing.Size(50, 50);
+            this.fillButton.TabIndex = 10;
+            this.fillButton.UseVisualStyleBackColor = true;
+            this.fillButton.Click += new System.EventHandler(this.fillButton_Click);
+            // 
+            // textButton
+            // 
+            this.textButton.Image = global::Paint.Resource.text;
+            this.textButton.Location = new System.Drawing.Point(339, 23);
+            this.textButton.Name = "textButton";
+            this.textButton.Size = new System.Drawing.Size(50, 50);
+            this.textButton.TabIndex = 12;
+            this.textButton.UseVisualStyleBackColor = true;
+            this.textButton.Click += new System.EventHandler(this.textButton_Click);
+            // 
+            // eraserButton
+            // 
+            this.eraserButton.Image = global::Paint.Resource.eraser;
+            this.eraserButton.Location = new System.Drawing.Point(59, 23);
+            this.eraserButton.Name = "eraserButton";
+            this.eraserButton.Size = new System.Drawing.Size(50, 50);
+            this.eraserButton.TabIndex = 9;
+            this.eraserButton.UseVisualStyleBackColor = true;
+            this.eraserButton.Click += new System.EventHandler(this.eraserButton_Click);
+            // 
+            // penButton
+            // 
+            this.penButton.Image = global::Paint.Resource.pen;
+            this.penButton.Location = new System.Drawing.Point(3, 23);
+            this.penButton.Name = "penButton";
+            this.penButton.Size = new System.Drawing.Size(50, 50);
+            this.penButton.TabIndex = 4;
+            this.penButton.UseVisualStyleBackColor = true;
+            this.penButton.Click += new System.EventHandler(this.penButton_Click);
+            // 
             // clearButton
             // 
-            this.clearButton.Location = new System.Drawing.Point(1196, 21);
+            this.clearButton.Location = new System.Drawing.Point(1160, 14);
             this.clearButton.Name = "clearButton";
             this.clearButton.Size = new System.Drawing.Size(80, 40);
             this.clearButton.TabIndex = 13;
@@ -122,7 +235,7 @@
             // coordinates
             // 
             this.coordinates.AutoSize = true;
-            this.coordinates.Location = new System.Drawing.Point(1193, 69);
+            this.coordinates.Location = new System.Drawing.Point(1148, 63);
             this.coordinates.Name = "coordinates";
             this.coordinates.Size = new System.Drawing.Size(112, 13);
             this.coordinates.TabIndex = 11;
@@ -130,64 +243,29 @@
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.textButton);
-            this.panel1.Controls.Add(this.pipetteButton);
-            this.panel1.Controls.Add(this.fillButton);
-            this.panel1.Controls.Add(this.eraserButton);
+            this.panel1.Controls.Add(this.label5);
             this.panel1.Controls.Add(this.lineButton);
             this.panel1.Controls.Add(this.triangleButton);
             this.panel1.Controls.Add(this.rectangleButton);
             this.panel1.Controls.Add(this.circleButton);
-            this.panel1.Controls.Add(this.penButton);
-            this.panel1.Location = new System.Drawing.Point(444, 6);
+            this.panel1.Location = new System.Drawing.Point(391, 7);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(708, 80);
+            this.panel1.Size = new System.Drawing.Size(243, 80);
             this.panel1.TabIndex = 0;
             // 
-            // textButton
+            // label5
             // 
-            this.textButton.Image = global::Paint.Resource.text;
-            this.textButton.Location = new System.Drawing.Point(637, 15);
-            this.textButton.Name = "textButton";
-            this.textButton.Size = new System.Drawing.Size(50, 50);
-            this.textButton.TabIndex = 12;
-            this.textButton.UseVisualStyleBackColor = true;
-            this.textButton.Click += new System.EventHandler(this.textButton_Click);
-            // 
-            // pipetteButton
-            // 
-            this.pipetteButton.Image = global::Paint.Resource.pipetka;
-            this.pipetteButton.Location = new System.Drawing.Point(561, 15);
-            this.pipetteButton.Name = "pipetteButton";
-            this.pipetteButton.Size = new System.Drawing.Size(50, 50);
-            this.pipetteButton.TabIndex = 11;
-            this.pipetteButton.UseVisualStyleBackColor = true;
-            this.pipetteButton.Click += new System.EventHandler(this.pipetteButton_Click);
-            // 
-            // fillButton
-            // 
-            this.fillButton.Image = global::Paint.Resource.fill;
-            this.fillButton.Location = new System.Drawing.Point(484, 14);
-            this.fillButton.Name = "fillButton";
-            this.fillButton.Size = new System.Drawing.Size(50, 50);
-            this.fillButton.TabIndex = 10;
-            this.fillButton.UseVisualStyleBackColor = true;
-            this.fillButton.Click += new System.EventHandler(this.fillButton_Click);
-            // 
-            // eraserButton
-            // 
-            this.eraserButton.Image = global::Paint.Resource.eraser;
-            this.eraserButton.Location = new System.Drawing.Point(405, 14);
-            this.eraserButton.Name = "eraserButton";
-            this.eraserButton.Size = new System.Drawing.Size(50, 50);
-            this.eraserButton.TabIndex = 9;
-            this.eraserButton.UseVisualStyleBackColor = true;
-            this.eraserButton.Click += new System.EventHandler(this.eraserButton_Click);
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(103, 7);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(48, 13);
+            this.label5.TabIndex = 15;
+            this.label5.Text = "Фигуры";
             // 
             // lineButton
             // 
             this.lineButton.Image = global::Paint.Resource.line;
-            this.lineButton.Location = new System.Drawing.Point(332, 14);
+            this.lineButton.Location = new System.Drawing.Point(180, 23);
             this.lineButton.Name = "lineButton";
             this.lineButton.Size = new System.Drawing.Size(50, 50);
             this.lineButton.TabIndex = 8;
@@ -197,7 +275,7 @@
             // triangleButton
             // 
             this.triangleButton.Image = global::Paint.Resource.trin;
-            this.triangleButton.Location = new System.Drawing.Point(253, 14);
+            this.triangleButton.Location = new System.Drawing.Point(124, 23);
             this.triangleButton.Name = "triangleButton";
             this.triangleButton.Size = new System.Drawing.Size(50, 50);
             this.triangleButton.TabIndex = 7;
@@ -207,7 +285,7 @@
             // rectangleButton
             // 
             this.rectangleButton.Image = global::Paint.Resource.rect;
-            this.rectangleButton.Location = new System.Drawing.Point(176, 15);
+            this.rectangleButton.Location = new System.Drawing.Point(68, 23);
             this.rectangleButton.Name = "rectangleButton";
             this.rectangleButton.Size = new System.Drawing.Size(50, 50);
             this.rectangleButton.TabIndex = 6;
@@ -217,27 +295,17 @@
             // circleButton
             // 
             this.circleButton.Image = global::Paint.Resource.circ;
-            this.circleButton.Location = new System.Drawing.Point(97, 14);
+            this.circleButton.Location = new System.Drawing.Point(9, 23);
             this.circleButton.Name = "circleButton";
             this.circleButton.Size = new System.Drawing.Size(50, 50);
             this.circleButton.TabIndex = 5;
             this.circleButton.UseVisualStyleBackColor = true;
             this.circleButton.Click += new System.EventHandler(this.circleButton_Click);
             // 
-            // penButton
-            // 
-            this.penButton.Image = global::Paint.Resource.pen;
-            this.penButton.Location = new System.Drawing.Point(18, 14);
-            this.penButton.Name = "penButton";
-            this.penButton.Size = new System.Drawing.Size(50, 50);
-            this.penButton.TabIndex = 4;
-            this.penButton.UseVisualStyleBackColor = true;
-            this.penButton.Click += new System.EventHandler(this.penButton_Click);
-            // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(318, 14);
+            this.label4.Location = new System.Drawing.Point(286, 14);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(86, 13);
             this.label4.TabIndex = 9;
@@ -246,7 +314,7 @@
             // trackBar1
             // 
             this.trackBar1.BackColor = System.Drawing.Color.Gray;
-            this.trackBar1.Location = new System.Drawing.Point(307, 37);
+            this.trackBar1.Location = new System.Drawing.Point(275, 37);
             this.trackBar1.Minimum = 2;
             this.trackBar1.Name = "trackBar1";
             this.trackBar1.Size = new System.Drawing.Size(110, 45);
@@ -432,6 +500,16 @@
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Файл";
             // 
+            // backgroundButton
+            // 
+            this.backgroundButton.Location = new System.Drawing.Point(257, 19);
+            this.backgroundButton.Name = "backgroundButton";
+            this.backgroundButton.Size = new System.Drawing.Size(85, 47);
+            this.backgroundButton.TabIndex = 2;
+            this.backgroundButton.Text = "Выбрать\r\nфон";
+            this.backgroundButton.UseVisualStyleBackColor = true;
+            this.backgroundButton.Click += new System.EventHandler(this.backgroundButton_Click);
+            // 
             // openFileButton
             // 
             this.openFileButton.Location = new System.Drawing.Point(139, 19);
@@ -475,25 +553,17 @@
             // canvas
             // 
             this.canvas.BackColor = System.Drawing.Color.White;
-            this.canvas.Location = new System.Drawing.Point(0, 0);
+            this.canvas.Location = new System.Drawing.Point(0, 3);
             this.canvas.Name = "canvas";
-            this.canvas.Size = new System.Drawing.Size(1280, 720);
+            this.canvas.Size = new System.Drawing.Size(1383, 716);
             this.canvas.TabIndex = 0;
             this.canvas.TabStop = false;
+            this.canvas.Click += new System.EventHandler(this.canvas_Click);
+            this.canvas.Paint += new System.Windows.Forms.PaintEventHandler(this.canvas_Paint);
             // 
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
-            // 
-            // backgroundButton
-            // 
-            this.backgroundButton.Location = new System.Drawing.Point(257, 19);
-            this.backgroundButton.Name = "backgroundButton";
-            this.backgroundButton.Size = new System.Drawing.Size(85, 47);
-            this.backgroundButton.TabIndex = 2;
-            this.backgroundButton.Text = "Выбрать\r\nфон";
-            this.backgroundButton.UseVisualStyleBackColor = true;
-            this.backgroundButton.Click += new System.EventHandler(this.backgroundButton_Click);
             // 
             // MainForm
             // 
@@ -506,7 +576,10 @@
             this.Text = "Рисовашка";
             tabPage1.ResumeLayout(false);
             tabPage1.PerformLayout();
+            this.panel3.ResumeLayout(false);
+            this.panel3.PerformLayout();
             this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
@@ -561,7 +634,6 @@
         private System.Windows.Forms.Button triangleButton;
         private System.Windows.Forms.Button rectangleButton;
         private System.Windows.Forms.Button circleButton;
-        private System.Windows.Forms.Label coordinates;
         private System.Windows.Forms.Button clearButton;
         private System.Windows.Forms.Button eraserButton;
         private System.Windows.Forms.Button fillButton;
@@ -572,5 +644,12 @@
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.Button backgroundButton;
+        private System.Windows.Forms.Button stileTextButton;
+        private System.Windows.Forms.Label coordinates;
+        private System.Windows.Forms.Button allocateButton;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Button canselButton;
     }
 }
