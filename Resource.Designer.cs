@@ -73,6 +73,16 @@ namespace Paint {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap base_fon {
+            get {
+                object obj = ResourceManager.GetObject("base_fon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap cansel {
             get {
                 object obj = ResourceManager.GetObject("cansel", resourceCulture);

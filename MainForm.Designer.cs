@@ -224,7 +224,7 @@
             // 
             // clearButton
             // 
-            this.clearButton.Location = new System.Drawing.Point(1160, 14);
+            this.clearButton.Location = new System.Drawing.Point(1159, 30);
             this.clearButton.Name = "clearButton";
             this.clearButton.Size = new System.Drawing.Size(80, 40);
             this.clearButton.TabIndex = 13;
@@ -235,9 +235,11 @@
             // coordinates
             // 
             this.coordinates.AutoSize = true;
-            this.coordinates.Location = new System.Drawing.Point(1148, 63);
+            this.coordinates.Dock = System.Windows.Forms.DockStyle.Right;
+            this.coordinates.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.coordinates.Location = new System.Drawing.Point(1691, 3);
             this.coordinates.Name = "coordinates";
-            this.coordinates.Size = new System.Drawing.Size(112, 13);
+            this.coordinates.Size = new System.Drawing.Size(202, 25);
             this.coordinates.TabIndex = 11;
             this.coordinates.Text = "координаты курсора";
             // 
@@ -553,13 +555,14 @@
             // canvas
             // 
             this.canvas.BackColor = System.Drawing.Color.White;
+            this.canvas.BackgroundImage = global::Paint.Resource.base_fon;
             this.canvas.Location = new System.Drawing.Point(0, 3);
             this.canvas.Name = "canvas";
-            this.canvas.Size = new System.Drawing.Size(1383, 716);
+            this.canvas.Size = new System.Drawing.Size(1920, 1080);
             this.canvas.TabIndex = 0;
             this.canvas.TabStop = false;
-            this.canvas.Click += new System.EventHandler(this.canvas_Click);
             this.canvas.Paint += new System.Windows.Forms.PaintEventHandler(this.canvas_Paint);
+            this.canvas.MouseMove += new System.Windows.Forms.MouseEventHandler(this.canvas_MouseMove);
             // 
             // openFileDialog1
             // 
