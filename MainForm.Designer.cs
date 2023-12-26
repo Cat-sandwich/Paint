@@ -347,10 +347,11 @@
             // 
             // palette
             // 
-            this.palette.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.palette.Image = ((System.Drawing.Image)(resources.GetObject("palette.Image")));
             this.palette.Location = new System.Drawing.Point(206, 17);
             this.palette.Name = "palette";
             this.palette.Size = new System.Drawing.Size(30, 30);
+            this.palette.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.palette.TabIndex = 11;
             this.palette.TabStop = false;
             this.palette.Click += new System.EventHandler(this.palette_Click);
@@ -536,6 +537,7 @@
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitContainer1.IsSplitterFixed = true;
             this.splitContainer1.Location = new System.Drawing.Point(0, 0);
             this.splitContainer1.Name = "splitContainer1";
             this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;

@@ -16,8 +16,7 @@ namespace Paint
 
         private Graphics _graphics;
         private Stack <Bitmap> _bitmaps;
-        private Bitmap _currentBitmap;
-        
+        private Bitmap _currentBitmap;        
        
         private Color _lineColor;
 
@@ -38,6 +37,8 @@ namespace Paint
         private PictureBox _selectedArea;
         private bool _isDragging;
         private Point _startAllocatePoint;
+
+        private bool _isErase;
         private Pen _pen
         {
             get
@@ -48,7 +49,6 @@ namespace Paint
                 return pen;
             }
         }
-
        
         public MainForm()
         {
@@ -95,7 +95,6 @@ namespace Paint
 
         private void palette_Click(object sender, EventArgs e)
         {
-
             ColorDialog colorDialog = new ColorDialog();
             canvas.Paint -= canvas_Paint;
             if (colorDialog.ShowDialog() == DialogResult.OK)
@@ -265,7 +264,6 @@ namespace Paint
             }
         }
 
-
         private void clearButton_Click(object sender, EventArgs e)
         {
             ClearCanvas();
@@ -284,23 +282,25 @@ namespace Paint
         private void eraserButton_Click(object sender, EventArgs e)
         {
             ClearEvents();
-            _mouseDownEvent = (mySender, myE) => { _penTool.StartDrawing(myE.Location); };
+            _mouseDownEvent = (mySender, myE) => { _isErase = true; };
             _mouseMoveEvent = (mySender, myE) =>
             {
-                _penTool.Draw(new Pen(canvas.BackColor, trackBar1.Value), myE.Location);
+                if (!_isErase) return;
+                Rectangle eraseArea = new Rectangle(myE.Location, new Size(trackBar1.Value * 3, trackBar1.Value * 3));
+                ClearArea(_currentBitmap, eraseArea);
                 canvas.Invalidate();
             };
             _mouseUpEvent = (mySender, myE) => 
-            { 
-                _penTool.StopDrawing();
+            {
+                _isErase = false;
                 _bitmaps.Push(new Bitmap(_currentBitmap));
             };
             SubEvents();
         }
-        private void DrawPoint(int x, int y, Color fillColor)
+        private void DrawPoint(Bitmap bitmap, int x, int y, Color fillColor)
         {
-            if (x >= 0 && x < _currentBitmap.Width && y >= 0 && y < _currentBitmap.Height)
-                _currentBitmap.SetPixel(x, y, fillColor);
+            if (x >= 0 && x < bitmap.Width && y >= 0 && y < bitmap.Height)
+                bitmap.SetPixel(x, y, fillColor);
         }
         private bool Equals(Color color1, Color color2)
         {
@@ -322,7 +322,7 @@ namespace Paint
                     Color currentColor = _currentBitmap.GetPixel(currentX, currentY);
                     if (!Equals(currentColor, fillColor) && Equals(currentColor, targetColor))
                     {
-                        DrawPoint(currentX, currentY, fillColor);
+                        DrawPoint(_currentBitmap ,currentX, currentY, fillColor);
                         stack.Push((currentX - 1, currentY));
                         stack.Push((currentX + 1, currentY));
                         stack.Push((currentX, currentY - 1));
@@ -362,7 +362,7 @@ namespace Paint
         
         private void saveFileButton_Click(object sender, EventArgs e)
         {
-            saveFileDialog1.Filter = "PNG(*.PNG)|*.PNG";
+            saveFileDialog1.Filter = "PNG(*.png)|*.png|JPG (*.jpg)|*.jpg";
             if (saveFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 if (canvas.Image != null)
@@ -382,7 +382,7 @@ namespace Paint
 
         private void openFileButton_Click(object sender, EventArgs e)
         {
-            openFileDialog1.Filter = "PNG(*.PNG)|*.PNG";
+            openFileDialog1.Filter = "PNG(*.png)|*.png|JPG (*.jpg)|*.jpg";
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 try
@@ -408,7 +408,7 @@ namespace Paint
 
         private void backgroundButton_Click(object sender, EventArgs e)
         {
-            openFileDialog1.Filter = "Изображения (*.jpg;*.jpeg;*.png;*.bmp)|*.jpg;*.jpeg;*.png;*.bmp|Все файлы (*.*)|*.*";
+            openFileDialog1.Filter = "PNG(*.png)|*.png|JPG (*.jpg)|*.jpg";
 
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
@@ -449,6 +449,14 @@ namespace Paint
                     canvas.Invalidate();
                     _bitmaps.Push(new Bitmap(_currentBitmap));
                     splitContainer1.Panel2.Controls.Remove(_currentTextLabel);
+                }
+                else if (myE.KeyChar == (char)Keys.Back)
+                {
+                    _currentTextLabel.ForeColor = _lineColor;
+                    _currentTextLabel.BorderStyle = BorderStyle.FixedSingle;
+                    _currentTextLabel.Visible = true;
+                    string newText = _currentTextLabel.Text;
+                    _currentTextLabel.Text = newText.Substring(0, newText.Length - 1);
                 }
                 else
                 {
@@ -552,18 +560,23 @@ namespace Paint
         {
             InitSelectedArea();
             Bitmap selectedBitmap = new Bitmap(_selectedArea.Width, _selectedArea.Height);
-
             using (Graphics g = Graphics.FromImage(selectedBitmap))
             {
-                g.DrawImage(_currentBitmap, 0, 0, _rectTool.GetRectangle(), GraphicsUnit.Pixel);
-                
+                g.DrawImage(_currentBitmap, 0, 0, _rectTool.GetRectangle(), GraphicsUnit.Pixel);                
             }
             _selectedArea.Image = selectedBitmap;
             splitContainer1.Panel2.Controls.Add(_selectedArea);
             _selectedArea.BringToFront();
-            using (Graphics g = Graphics.FromImage(_currentBitmap))
+            ClearArea(_currentBitmap ,_rectTool.GetRectangle());
+        }
+        private void ClearArea(Bitmap bitmap, Rectangle rect)
+        {
+            for (int i = rect.X; i < rect.Width + rect.X; i++)
             {
-                g.FillRectangle(new SolidBrush(canvas.BackColor), _rectTool.GetRectangle());
+                for (int j = rect.Y; j < rect.Height + rect.Y; j++)
+                {
+                    DrawPoint(bitmap, i, j, Color.FromArgb(0, 0, 0, 0));
+                }
             }
         }
         private void InitAllocateEvents(Pen pen)
@@ -618,7 +631,6 @@ namespace Paint
 
         private void canvas_MouseMove(object sender, MouseEventArgs e)
         {
-
             coordinates.Text = e.Location.ToString();
         }
     }

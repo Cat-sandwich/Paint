@@ -120,13 +120,27 @@
   <metadata name="tabPage1.GenerateMember" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>False</value>
   </metadata>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="palette.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAACxIAAAsSAdLdfvwAAAHeSURBVDhPY8AG+t2b1Gd69JQs9pm98JCj44LtVlZFW01N
+        1aDSuAFI4wrfRSdPhJ38fyv24f87sY//v05I+P8qPv7/ndDQ/0ddXE7iNKg3aKrj3uDdP0GakDHIAGR8
+        2c/v544wO0eoNgioiZ6jPjv2+M/9UZfeETLgcan3+xt1zj+2ZtsgXNIbs/nUBqBiEN4XdfEDLgNAmj90
+        efwH4VPljsfBmutjF6otir0I1oww5MJbdAOQNYPwwybX/2BXNMcsKVkf+wjFAGRDsGkG4Xdd7v/35NkV
+        M3TGbpiPrhmGgWHy8VGJ9wd0zTB8rNRhHkNw9o75+a0v/mPDqe133085lfv+//3I/9jw8YUmcxi80leX
+        5LU8x9Cc1nb3Q9r8t//LrtX+n34m5yO65r93I/7vna5VyOCetEo9teYaVs0wA7AZ8vqk9/8dvVoq4JgI
+        zd99Eq4Z6GyYZmQDQBjZO+dXWkCiEQQ8U5arxVec/QHyM7JmdAMghuR8fLjP5ceuCZqqUO0QEFS6xTF+
+        8o2fhAxI21P2o3GmH2pShoHw+t1qUT0nTyRNv/8/bd5ruAGlV2v/5xyp+B+7quB40PQ8VJuxgdD6HSoR
+        rXsLozuPzYtaXrggeHZeYcDkbCy5kIEBALkVJw2alhdTAAAAAElFTkSuQmCC
+</value>
+  </data>
   <metadata name="saveFileDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
   <metadata name="openFileDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>152, 17</value>
   </metadata>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         AAABAAEAEBAAAAEAIABoBAAAFgAAACgAAAAQAAAAIAAAAAEAIAAAAAAAAAQAAG8AAABvAAAAAAAAAAAA
